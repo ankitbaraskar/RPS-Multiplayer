@@ -39,14 +39,23 @@ connectedRef.on("value", function (snapshot) {
       numberOfconnectionsRef.update({
         [getInputName]:
         {
-          name: getInputName,
-          choices: ["rock", "paper", "scissors"]
+          choice: "true"
 
         }
       });
 
       // push RPS buttons to screen only once submit is clicked or entered
       makeButtonsForRPS();
+
+      $(".choice-button-class").on("click", function () {
+
+        var choiceFromButton = $(this).val();
+        // console.log(choiceFromButton);
+
+        numberOfconnectionsRef.child(getInputName).update({
+          choice: choiceFromButton
+        });
+      });
 
 
     });
@@ -55,11 +64,11 @@ connectedRef.on("value", function (snapshot) {
 });
 
 // function to display rock, paper, scissors options
-function makeButtonsForRPS(){
-  var choices = ["rock","paper","scissors"];
-  for(let i = 0; i< choices.length;i++){
+function makeButtonsForRPS() {
+  var choices = ["rock", "paper", "scissors"];
+  for (let i = 0; i < choices.length; i++) {
     var buttons = $("<button>");
-    buttons.attr("value",choices[i]).addclass("choice-button-class").text(choices[i]);
+    buttons.attr("value", choices[i]).addClass("choice-button-class").text(choices[i]);
     $("#display-game").append(buttons);
   }
 };
