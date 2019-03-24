@@ -22,15 +22,18 @@ connectedRef.on("value", function (snapshot) {
   // If they are connected..
   if (snapshot.val()) {
 
-    // remove on disconnect
-    numberOfconnectionsRef.onDisconnect().remove();
 
+    // display submit form only if connected
     displayInputFormWithSubmit();
 
     $("#submit-name").on("click", function (event) {
+
       event.preventDefault();
 
       var getInputName = $("#input-name").val().trim();
+
+      // remove on disconnect
+      numberOfconnectionsRef.child(getInputName).onDisconnect().remove();
 
       // Add user to the connections list.
       numberOfconnectionsRef.update({
@@ -42,10 +45,24 @@ connectedRef.on("value", function (snapshot) {
         }
       });
 
+      // push RPS buttons to screen only once submit is clicked or entered
+      makeButtonsForRPS();
+
+
     });
-    
+
   }
 });
+
+// function to display rock, paper, scissors options
+function makeButtonsForRPS(){
+  var choices = ["rock","paper","scissors"];
+  for(let i = 0; i< choices.length;i++){
+    var buttons = $("<button>");
+    buttons.attr("value",choices[i]).addclass("choice-button-class").text(choices[i]);
+    $("#display-game").append(buttons);
+  }
+};
 
 
 // function to display form
