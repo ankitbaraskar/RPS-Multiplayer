@@ -55,6 +55,15 @@ connectedRef.on("value", function (snapshot) {
         numberOfconnectionsRef.child(getInputName).update({
           choice: choiceFromButton
         });
+
+
+        database.ref("/connections/"+getInputName+"/choice").on("value",function(snapshot){
+
+          var choiceFromSnapshot = snapshot.val();
+          console.log (choiceFromSnapshot);
+
+        });
+
       });
 
 
