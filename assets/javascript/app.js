@@ -60,7 +60,10 @@ connectedRef.on("value", function (snapshot) {
         database.ref("/connections/"+getInputName+"/choice").on("value",function(snapshot){
 
           var choiceFromSnapshot = snapshot.val();
-          console.log (choiceFromSnapshot);
+          // console.log (choiceFromSnapshot);
+          // if (choiceFromSnapshot=="paper"){
+          //   console.log("yup its paper")
+          // }
 
         });
 
