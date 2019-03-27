@@ -38,11 +38,8 @@ connectedRef.on("value", function (snapshot) {
 
       // Add user to the connections list.
       numberOfconnectionsRef.update({
-        [getInputName]:
-        {
-          choice: "true"
-
-        }
+        [getInputName]:"true"
+       
       });
 
       // hide form by making it empty
@@ -55,14 +52,15 @@ connectedRef.on("value", function (snapshot) {
         var choiceFromButton = $(this).val();
         // console.log(choiceFromButton);
 
-        numberOfconnectionsRef.child(getInputName).update({
-          choice: choiceFromButton
+        numberOfconnectionsRef.update({
+          [getInputName]:choiceFromButton
+         
         });
 
       });
 
      
-      database.ref("/connections/" + getInputName + "/choice").on("value", function (snapshot) {
+      database.ref("/connections/" + getInputName).on("value", function (snapshot) {
 
         var choiceFromSnapshot = snapshot.val();
         console.log(choiceFromSnapshot);
