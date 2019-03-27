@@ -70,12 +70,18 @@ connectedRef.on("value", function (snapshot) {
         var choiceFromPlayerOne;
         var choiceFromPlayerTwo;
 
+        var playerOneKey;
+        var playerTwoKey;
+
         snapshot.forEach(function (childsnapshot) {
           if (getInputName == childsnapshot.key) {
+            playerOneKey = childsnapshot.key;
+            console.log(playerOneKey)
             choiceFromPlayerOne = childsnapshot.child("choice").val();
             console.log("playeronechoice " + choiceFromPlayerOne);
           }
           else {
+            playerTwoKey = childsnapshot.key;
             choiceFromPlayerTwo = childsnapshot.child("choice").val();
             console.log("playertwochoice " + choiceFromPlayerTwo);
           }
@@ -83,6 +89,8 @@ connectedRef.on("value", function (snapshot) {
 
         if (choiceFromPlayerOne != "true" && choiceFromPlayerTwo != "true") {
           doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
+          numberOfconnectionsRef.child(playerOneKey).update({ choice: "true"});
+          numberOfconnectionsRef.child(playerTwoKey).update({ choice: "true"});
         }
 
 
