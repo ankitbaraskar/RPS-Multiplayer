@@ -39,7 +39,13 @@ connectedRef.on("value", function (snapshot) {
       // Add user to the connections list.
       numberOfconnectionsRef.update({
         [getInputName]:
-          { choice: "true" }
+        {
+          choice: "true",
+          wins: 0,
+          losses: 0,
+          ties: 0
+
+        }
 
       });
 
@@ -53,11 +59,7 @@ connectedRef.on("value", function (snapshot) {
         var choiceFromButton = $(this).val();
         // console.log(choiceFromButton);
 
-        numberOfconnectionsRef.update({
-          [getInputName]:
-            { choice: choiceFromButton }
-
-        });
+        numberOfconnectionsRef.child(getInputName).child("choice").set(choiceFromButton);
 
       });
 
@@ -76,21 +78,22 @@ connectedRef.on("value", function (snapshot) {
         snapshot.forEach(function (childsnapshot) {
           if (getInputName == childsnapshot.key) {
             playerOneKey = childsnapshot.key;
-            console.log(playerOneKey)
+            // console.log(playerOneKey)
             choiceFromPlayerOne = childsnapshot.child("choice").val();
-            console.log("playeronechoice " + choiceFromPlayerOne);
+            // console.log("playeronechoice " + choiceFromPlayerOne);
           }
           else {
             playerTwoKey = childsnapshot.key;
             choiceFromPlayerTwo = childsnapshot.child("choice").val();
-            console.log("playertwochoice " + choiceFromPlayerTwo);
+            // console.log("playertwochoice " + choiceFromPlayerTwo);
           }
         });
 
         if (choiceFromPlayerOne != "true" && choiceFromPlayerTwo != "true") {
           doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
-          numberOfconnectionsRef.child(playerOneKey).update({ choice: "true" });
-          numberOfconnectionsRef.child(playerTwoKey).update({ choice: "true" });
+          numberOfconnectionsRef.child(playerOneKey).child("choice").set("true");
+          numberOfconnectionsRef.child(playerTwoKey).child("choice").set("true");
+         
         }
 
 
