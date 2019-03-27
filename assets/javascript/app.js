@@ -97,18 +97,6 @@ connectedRef.on("value", function (snapshot) {
       });
 
 
-      // database.ref("/connections/" + getInputName).on("value", function (snapshot) {
-
-      //   var choiceFromSnapshot = snapshot.val();
-      //   console.log(choiceFromSnapshot);
-      //   // if (choiceFromSnapshot=="paper"){
-      //   //   console.log("yup its paper")
-      //   // }
-
-      // });
-
-
-
     });
 
 
@@ -151,12 +139,18 @@ function doRPSforPlayerOne(choiceone, choicetwo) {
     || (choiceone == "paper" && choicetwo == "rock")
     || (choiceone == "scissors" && choicetwo == "paper")) {
     $("#display-choice").text("You Win!");
+    setTimeout(removeDisplayChoiceAfterCoupleSeconds,3000);
   }
   else if (choiceone == choicetwo) {
     $("#display-choice").text("You Tied!");
+    setTimeout(removeDisplayChoiceAfterCoupleSeconds,3000);
   }
   else {
     $("#display-choice").text("You Lose!");
+    setTimeout(removeDisplayChoiceAfterCoupleSeconds,3000);
   }
 };
 
+function removeDisplayChoiceAfterCoupleSeconds(){
+  $("#display-choice").empty();
+}
