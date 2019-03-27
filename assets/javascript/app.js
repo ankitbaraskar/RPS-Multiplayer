@@ -22,6 +22,7 @@ connectedRef.on("value", function (snapshot) {
   // If they are connected..
   if (snapshot.val()) {
 
+    var getInputName;
 
     // display submit form only if connected
     displayInputFormWithSubmit();
@@ -30,7 +31,7 @@ connectedRef.on("value", function (snapshot) {
 
       event.preventDefault();
 
-      var getInputName = $("#input-name").val().trim();
+      getInputName = $("#input-name").val().trim();
 
       // remove on disconnect
       numberOfconnectionsRef.child(getInputName).onDisconnect().remove();
@@ -44,6 +45,8 @@ connectedRef.on("value", function (snapshot) {
         }
       });
 
+      // hide form by making it empty
+      $("#display-form").empty();
       // push RPS buttons to screen only once submit is clicked or entered
       makeButtonsForRPS();
 
@@ -56,27 +59,31 @@ connectedRef.on("value", function (snapshot) {
           choice: choiceFromButton
         });
 
+      });
 
-        database.ref("/connections/"+getInputName+"/choice").on("value",function(snapshot){
+     
+      database.ref("/connections/" + getInputName + "/choice").on("value", function (snapshot) {
 
-          var choiceFromSnapshot = snapshot.val();
-          // console.log (choiceFromSnapshot);
-          // if (choiceFromSnapshot=="paper"){
-          //   console.log("yup its paper")
-          // }
-
-        });
-
+        var choiceFromSnapshot = snapshot.val();
+        console.log(choiceFromSnapshot);
+        // if (choiceFromSnapshot=="paper"){
+        //   console.log("yup its paper")
+        // }
+  
       });
 
 
+
     });
+
+
 
   }
 });
 
 // function to display rock, paper, scissors options
 function makeButtonsForRPS() {
+  $("#display-game").empty();
   var choices = ["rock", "paper", "scissors"];
   for (let i = 0; i < choices.length; i++) {
     var buttons = $("<button>");
