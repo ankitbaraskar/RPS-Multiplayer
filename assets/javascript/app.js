@@ -89,8 +89,8 @@ connectedRef.on("value", function (snapshot) {
 
         if (choiceFromPlayerOne != "true" && choiceFromPlayerTwo != "true") {
           doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
-          numberOfconnectionsRef.child(playerOneKey).update({ choice: "true"});
-          numberOfconnectionsRef.child(playerTwoKey).update({ choice: "true"});
+          numberOfconnectionsRef.child(playerOneKey).update({ choice: "true" });
+          numberOfconnectionsRef.child(playerTwoKey).update({ choice: "true" });
         }
 
 
@@ -135,22 +135,27 @@ function displayInputFormWithSubmit() {
 };
 
 function doRPSforPlayerOne(choiceone, choicetwo) {
-  if ((choiceone == "rock" && choicetwo == "scissors")
-    || (choiceone == "paper" && choicetwo == "rock")
-    || (choiceone == "scissors" && choicetwo == "paper")) {
-    $("#display-choice").text("You Win!");
-    setTimeout(removeDisplayChoiceAfterCoupleSeconds,3000);
+
+  if (choiceone && choicetwo) {
+
+    if ((choiceone == "rock" && choicetwo == "scissors")
+      || (choiceone == "paper" && choicetwo == "rock")
+      || (choiceone == "scissors" && choicetwo == "paper")) {
+      $("#display-choice").text("You Win!");
+      setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
+    }
+    else if (choiceone == choicetwo) {
+      $("#display-choice").text("You Tied!");
+      setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
+    }
+    else {
+      $("#display-choice").text("You Lose!");
+      setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
+    }
   }
-  else if (choiceone == choicetwo) {
-    $("#display-choice").text("You Tied!");
-    setTimeout(removeDisplayChoiceAfterCoupleSeconds,3000);
-  }
-  else {
-    $("#display-choice").text("You Lose!");
-    setTimeout(removeDisplayChoiceAfterCoupleSeconds,3000);
-  }
+
 };
 
-function removeDisplayChoiceAfterCoupleSeconds(){
+function removeDisplayChoiceAfterCoupleSeconds() {
   $("#display-choice").empty();
 }
