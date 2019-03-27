@@ -38,8 +38,9 @@ connectedRef.on("value", function (snapshot) {
 
       // Add user to the connections list.
       numberOfconnectionsRef.update({
-        [getInputName]:"true"
-       
+        [getInputName]:
+          { choice: "true" }
+
       });
 
       // hide form by making it empty
@@ -53,22 +54,50 @@ connectedRef.on("value", function (snapshot) {
         // console.log(choiceFromButton);
 
         numberOfconnectionsRef.update({
-          [getInputName]:choiceFromButton
-         
+          [getInputName]:
+            { choice: choiceFromButton }
+
         });
 
       });
 
-     
-      database.ref("/connections/" + getInputName).on("value", function (snapshot) {
+      // var numberofplayers;
+      numberOfconnectionsRef.limitToFirst(2).on("value", function (snapshot) {
 
-        var choiceFromSnapshot = snapshot.val();
-        console.log(choiceFromSnapshot);
-        // if (choiceFromSnapshot=="paper"){
-        //   console.log("yup its paper")
-        // }
-  
+        // var numberofplayers = snapshot.numChildren();
+        // console.log(numberofplayers);
+
+        var choiceFromPlayerOne;
+        var choiceFromPlayerTwo;
+
+        snapshot.forEach(function (childsnapshot) {
+          if (getInputName == childsnapshot.key) {
+            choiceFromPlayerOne = childsnapshot.child("choice").val();
+            console.log("playeronechoice " + choiceFromPlayerOne);
+          }
+          else {
+            choiceFromPlayerTwo = childsnapshot.child("choice").val();
+            console.log("playertwochoice " + choiceFromPlayerTwo);
+          }
+        });
+
+        if (choiceFromPlayerOne != "true" && choiceFromPlayerTwo != "true") {
+          doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
+        }
+
+
       });
+
+
+      // database.ref("/connections/" + getInputName).on("value", function (snapshot) {
+
+      //   var choiceFromSnapshot = snapshot.val();
+      //   console.log(choiceFromSnapshot);
+      //   // if (choiceFromSnapshot=="paper"){
+      //   //   console.log("yup its paper")
+      //   // }
+
+      // });
 
 
 
@@ -107,6 +136,19 @@ function displayInputFormWithSubmit() {
 
   form.append(label).append(inputText).append(inputSubmitButton);
   $("#display-form").append(form);
-}
+};
 
+function doRPSforPlayerOne(choiceone, choicetwo) {
+  if ((choiceone == "rock" && choicetwo == "scissors")
+    || (choiceone == "paper" && choicetwo == "rock")
+    || (choiceone == "scissors" && choicetwo == "paper")) {
+    $("#display-choice").text("You Win!");
+  }
+  else if (choiceone == choicetwo) {
+    $("#display-choice").text("You Tied!");
+  }
+  else {
+    $("#display-choice").text("You Lose!");
+  }
+};
 
