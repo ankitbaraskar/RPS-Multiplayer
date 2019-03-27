@@ -75,6 +75,8 @@ connectedRef.on("value", function (snapshot) {
         var playerOneKey;
         var playerTwoKey;
 
+        var wins;
+
         snapshot.forEach(function (childsnapshot) {
           if (getInputName == childsnapshot.key) {
             playerOneKey = childsnapshot.key;
@@ -90,10 +92,45 @@ connectedRef.on("value", function (snapshot) {
         });
 
         if (choiceFromPlayerOne != "true" && choiceFromPlayerTwo != "true") {
-          doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
+          // doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
+
+          if (choiceFromPlayerOne && choiceFromPlayerTwo) {
+
+            if ((choiceFromPlayerOne == "rock" && choiceFromPlayerTwo == "scissors")
+              || (choiceFromPlayerOne == "paper" && choiceFromPlayerTwo == "rock")
+              || (choiceFromPlayerOne == "scissors" && choiceFromPlayerTwo == "paper")) {
+
+
+              snapshot.forEach(function (childsnapshot) {
+                if (getInputName == childsnapshot.key) {
+                  childsnapshot.key.child("wins").set()
+                  console.log(childsnapshot);
+                }
+                else {
+                  childsnapshot.child("choice").val();
+                  console.log("playertwochoice " + choiceFromPlayerTwo);
+                }
+              });
+
+
+
+
+              $("#display-choice").text("You Win!");
+              setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
+            }
+            else if (choiceFromPlayerOne == choiceFromPlayerTwo) {
+              $("#display-choice").text("You Tied!");
+              setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
+            }
+            else {
+              $("#display-choice").text("You Lose!");
+              setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
+            }
+          }
+
           numberOfconnectionsRef.child(playerOneKey).child("choice").set("true");
           numberOfconnectionsRef.child(playerTwoKey).child("choice").set("true");
-         
+
         }
 
 
