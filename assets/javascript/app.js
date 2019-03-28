@@ -76,6 +76,10 @@ connectedRef.on("value", function (snapshot) {
         var playerTwoKey;
 
         var wins;
+        var losses;
+        var ties;
+
+        displayScore(snapshot,getInputName);
 
         snapshot.forEach(function (childsnapshot) {
           if (getInputName == childsnapshot.key) {
@@ -92,7 +96,11 @@ connectedRef.on("value", function (snapshot) {
         });
 
         if (choiceFromPlayerOne != "true" && choiceFromPlayerTwo != "true") {
-          // doRPSforPlayerOne(choiceFromPlayerOne, choiceFromPlayerTwo);
+
+
+          // to cancel infinite loop
+          numberOfconnectionsRef.child(playerOneKey).child("choice").set("true");
+          numberOfconnectionsRef.child(playerTwoKey).child("choice").set("true");
 
           if (choiceFromPlayerOne && choiceFromPlayerTwo) {
 
@@ -103,12 +111,16 @@ connectedRef.on("value", function (snapshot) {
 
               snapshot.forEach(function (childsnapshot) {
                 if (getInputName == childsnapshot.key) {
-                  childsnapshot.key.child("wins").set()
-                  console.log(childsnapshot);
+                  wins = childsnapshot.child("wins").val();
+                  wins ++;
+                  console.log(wins);
+                  numberOfconnectionsRef.child(childsnapshot.key).child("wins").set(wins);
+                  
                 }
                 else {
-                  childsnapshot.child("choice").val();
-                  console.log("playertwochoice " + choiceFromPlayerTwo);
+                  losses = childsnapshot.child("losses").val();
+                  losses++;
+                  numberOfconnectionsRef.child(childsnapshot.key).child("losses").set(losses);
                 }
               });
 
@@ -119,6 +131,23 @@ connectedRef.on("value", function (snapshot) {
               setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
             }
             else if (choiceFromPlayerOne == choiceFromPlayerTwo) {
+
+
+              snapshot.forEach(function (childsnapshot) {
+                if (getInputName == childsnapshot.key) {
+                  ties = childsnapshot.child("ties").val();
+                  ties ++;
+                  console.log(ties);
+                  numberOfconnectionsRef.child(childsnapshot.key).child("ties").set(ties);
+                  
+                }
+                else {
+                  ties = childsnapshot.child("ties").val();
+                  ties++;
+                  numberOfconnectionsRef.child(childsnapshot.key).child("ties").set(ties);
+                }
+              });
+
               $("#display-choice").text("You Tied!");
               setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
             }
@@ -128,8 +157,8 @@ connectedRef.on("value", function (snapshot) {
             }
           }
 
-          numberOfconnectionsRef.child(playerOneKey).child("choice").set("true");
-          numberOfconnectionsRef.child(playerTwoKey).child("choice").set("true");
+          // numberOfconnectionsRef.child(playerOneKey).child("choice").set("true");
+          // numberOfconnectionsRef.child(playerTwoKey).child("choice").set("true");
 
         }
 
@@ -198,4 +227,18 @@ function doRPSforPlayerOne(choiceone, choicetwo) {
 
 function removeDisplayChoiceAfterCoupleSeconds() {
   $("#display-choice").empty();
+}
+
+function displayScore(snapshot,getInputName){
+
+
+  var winsvar = snapshot.child(getInputName).child("wins").val();
+  var lossesvar = snapshot.child(getInputName).child("losses").val();
+  var tiesvar = snapshot.child(getInputName).child("ties").val();
+
+  $("#title-id").text("Here's Your Score:");
+  $("#display-wins").text("Wins: "+winsvar);
+  $("#display-losses").text("Losses: "+lossesvar);
+  $("#display-ties").text("Ties: "+tiesvar);
+  
 }
