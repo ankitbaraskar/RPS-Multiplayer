@@ -203,32 +203,14 @@ function displayInputFormWithSubmit() {
   $("#display-form").append(form);
 };
 
-function doRPSforPlayerOne(choiceone, choicetwo) {
 
-  if (choiceone && choicetwo) {
-
-    if ((choiceone == "rock" && choicetwo == "scissors")
-      || (choiceone == "paper" && choicetwo == "rock")
-      || (choiceone == "scissors" && choicetwo == "paper")) {
-      $("#display-choice").text("You Win!");
-      setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
-    }
-    else if (choiceone == choicetwo) {
-      $("#display-choice").text("You Tied!");
-      setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
-    }
-    else {
-      $("#display-choice").text("You Lose!");
-      setTimeout(removeDisplayChoiceAfterCoupleSeconds, 3000);
-    }
-  }
-
-};
 
 function removeDisplayChoiceAfterCoupleSeconds() {
   $("#display-choice").empty();
 }
 
+
+// displays score
 function displayScore(snapshot,getInputName){
 
 
